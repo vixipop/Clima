@@ -1,18 +1,43 @@
+import 'package:clima/services/location.dart';
+import 'package:clima/services/networking.dart';
+
+const apiKey = 'e9ca0b04212d2824b0293e5eda7be436';
+const OWMURL = 'https://api.openweathermap.org/data/2.5/weather';
+
 class WeatherModel {
-  String getWeatherIcon(int condition) {
-    if (condition < 300) {
+
+  Future <dynamic> getCityWeather (String cityName) async {
+    var url  = '$OWMURL?q={$cityName}&appid=$apiKey&units=metric';
+    NetworkHelper networkHelper = NetworkHelper(url);
+
+    var weatherData = await networkHelper.getData();
+    return weatherData;
+  }
+
+  Future <dynamic> getLocationWeather() async {
+    Location location = Location();
+    await location.getCurrentLocation();
+
+    NetworkHelper networkHelper = NetworkHelper('$OWMURL?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric');
+
+    var weatherData = await networkHelper.getData();
+    return weatherData;
+  }
+
+  String getWeatherIcon(int id) {
+    if (id < 300) {
       return '🌩';
-    } else if (condition < 400) {
+    } else if (id < 400) {
       return '🌧';
-    } else if (condition < 600) {
+    } else if (id < 600) {
       return '☔️';
-    } else if (condition < 700) {
+    } else if (id < 700) {
       return '☃️';
-    } else if (condition < 800) {
+    } else if (id < 800) {
       return '🌫';
-    } else if (condition == 800) {
+    } else if (id == 800) {
       return '☀️';
-    } else if (condition <= 804) {
+    } else if (id <= 804) {
       return '☁️';
     } else {
       return '🤷‍';
@@ -20,11 +45,11 @@ class WeatherModel {
   }
 
   String getMessage(int temp) {
-    if (temp > 25) {
+    if (temp > 28) {
       return 'It\'s 🍦 time';
-    } else if (temp > 20) {
+    } else if (temp > 25) {
       return 'Time for shorts and 👕';
-    } else if (temp < 10) {
+    } else if (temp < 20) {
       return 'You\'ll need 🧣 and 🧤';
     } else {
       return 'Bring a 🧥 just in case';
