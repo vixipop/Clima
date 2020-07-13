@@ -29,7 +29,7 @@ const kTextFieldInputDecoration = InputDecoration(
     ),
     hintText: 'Enter City Name',
     hintStyle: TextStyle(
-        color: Colors.grey
+        color: Colors.grey,
     ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.all( Radius.circular(30)),
